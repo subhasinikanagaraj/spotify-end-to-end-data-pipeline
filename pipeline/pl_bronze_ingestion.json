@@ -367,9 +367,7 @@
 						"activity": "AllTableBronzeIngestion",
 						"dependencyConditions": [
 							"Failed",
-							"Succeeded",
-							"Skipped",
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
