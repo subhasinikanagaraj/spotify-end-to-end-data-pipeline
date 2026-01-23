@@ -5,11 +5,17 @@
 		"factoryName": {
 			"value": "adf-spotifyde"
 		},
+		"ls_dbw_accessToken": {
+			"value": ""
+		},
 		"ls_sql_db_password": {
 			"value": ""
 		},
 		"ls_adls_properties_typeProperties_url": {
 			"value": "https://dlspotifyde.dfs.core.windows.net/"
+		},
+		"ls_dbw_properties_typeProperties_existingClusterId": {
+			"value": "0121-192939-bukedj40"
 		},
 		"ls_sql_db_properties_typeProperties_server": {
 			"value": "serverspotify.database.windows.net"

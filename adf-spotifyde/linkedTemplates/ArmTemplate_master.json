@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-spotifyde"
 		},
+		"ls_dbw_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_dbw'"
+		},
 		"ls_sql_db_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sql_db'"
@@ -14,6 +18,10 @@
 		"ls_adls_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dlspotifyde.dfs.core.windows.net/"
+		},
+		"ls_dbw_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0121-192939-bukedj40"
 		},
 		"ls_sql_db_properties_typeProperties_server": {
 			"type": "string",
@@ -54,11 +62,17 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"ls_dbw_accessToken": {
+						"value": "[parameters('ls_dbw_accessToken')]"
+					},
 					"ls_sql_db_password": {
 						"value": "[parameters('ls_sql_db_password')]"
 					},
 					"ls_adls_properties_typeProperties_url": {
 						"value": "[parameters('ls_adls_properties_typeProperties_url')]"
+					},
+					"ls_dbw_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_dbw_properties_typeProperties_existingClusterId')]"
 					},
 					"ls_sql_db_properties_typeProperties_server": {
 						"value": "[parameters('ls_sql_db_properties_typeProperties_server')]"

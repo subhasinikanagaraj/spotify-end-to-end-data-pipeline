@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-spotifyde"
 		},
+		"ls_dbw_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_dbw'"
+		},
 		"ls_sql_db_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sql_db'"
@@ -14,6 +18,10 @@
 		"ls_adls_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dlspotifyde.dfs.core.windows.net/"
+		},
+		"ls_dbw_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0121-192939-bukedj40"
 		},
 		"ls_sql_db_properties_typeProperties_server": {
 			"type": "string",
@@ -41,6 +49,24 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('ls_adls_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_dbw')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405617716772908.8.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('ls_dbw_accessToken')]"
+					},
+					"existingClusterId": "[parameters('ls_dbw_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": []
@@ -586,6 +612,67 @@
 				"[concat(variables('factoryId'), '/datasets/ds_sql_db')]",
 				"[concat(variables('factoryId'), '/datasets/ds_adls_parquet')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_sql_db')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_spotify_pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "bronze_ingestion",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_bronze_ingestion",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "silver_gold_workflow",
+						"type": "DatabricksJob",
+						"dependsOn": [
+							{
+								"activity": "bronze_ingestion",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"jobId": "996304361778208"
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_dbw",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_bronze_ingestion')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_dbw')]"
 			]
 		}
 	]
