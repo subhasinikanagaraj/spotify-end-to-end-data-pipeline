@@ -37,6 +37,9 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"typeProperties": {
+					"jobId": "996304361778208"
+				},
 				"linkedServiceName": {
 					"referenceName": "ls_dbw",
 					"type": "LinkedServiceReference"
