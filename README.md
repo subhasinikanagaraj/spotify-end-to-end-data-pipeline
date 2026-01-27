@@ -17,25 +17,27 @@ The pipeline includes:
 
 ## Architecture
 
+```text
 Azure SQL DB
-│
-▼
+     │
+     ▼
 Azure Data Factory (Incremental Copy)
-│
-▼
+     │
+     ▼
 ADLS Gen2 (Bronze - Parquet Files)
-│
-▼
+     │
+     ▼
 Databricks Auto Loader (Streaming Ingestion)
-│
-▼
+     │
+     ▼
 Silver Layer (Cleaned Delta Tables)
-│
-▼
+     │
+     ▼
 Delta Live Tables (DLT)
-│
-▼
+     │
+     ▼
 Gold Layer (SCD Type‑2 Dimensions)
+```
 
 
 ---
